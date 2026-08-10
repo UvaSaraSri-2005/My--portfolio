@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #0a5fa8;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .message-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .message-card h3 {
+            color: #0a5fa8;
+            margin-bottom: 8px;
+        }
+
+        .message-card p {
+            margin: 6px 0;
+            color: #444;
+        }
+
+        .date {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .no-messages {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Admin Dashboard</h1>
+        <button id="logoutBtn">Logout</button>
+
+        <p class="subtitle">
+            Contact Messages
+        </p>
+
+        <div id="messages">
+            <div class="loading">
+                Loading messages...
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        async function loadMessages() {
+
+            try {
+
+                const response = await fetch("/contacts");
+
+                if (response.status === 401) {
+                    window.location.href = "admin-login.html";
+                    return;
+                }
+
+                const data = await response.json();
+
+                const messagesContainer =
+                    document.getElementById("messages");
+
+                if (data.length === 0) {
+
+                    messagesContainer.innerHTML = `
+                        <div class="no-messages">
+                            No messages found.
+                        </div>
+                    `;
+
+                    return;
+                }
+
+                messagesContainer.innerHTML = "";
+
+                data.forEach(contact => {
+
+                    const card = document.createElement("div");
+
+                    card.className = "message-card";
+
+                    card.innerHTML = `
+                        <h3>${contact.name}</h3>
+
+                        <p>
+                            <strong>Email:</strong>
+                            ${contact.email}
+                        </p>
+
+                        <p>
+                            <strong>Message:</strong>
+                            ${contact.message}
+                        </p>
+
+                        <p class="date">
+                            ${new Date(contact.createdAt).toLocaleString()}
+                        </p>
+                    `;
+
+                    messagesContainer.appendChild(card);
+
+                });
+
+            } catch (error) {
+
+                console.error("Error loading messages:", error);
+
+                document.getElementById("messages").innerHTML = `
+                    <div class="no-messages">
+                        Failed to load messages.
+                    </div>
+                `;
+            }
+        }
+        document.getElementById("logoutBtn").addEventListener("click", async () => {
+
+        try {
+           const response = await fetch("/admin-logout", {
+            method: "POST"
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            window.location.href = "/admin-login.html";
+        }
+ 
+          } catch (error) {
+        console.error("Logout error:", error);
+        }
+
+        });
+        loadMessages();
+    </script>
+
+</body>
+
+</html>

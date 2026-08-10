@@ -1,0 +1,252 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f5f6fa;
+  color: #0a0a0a;
+}
+
+.header {
+  background: linear-gradient(135deg,#055699,#4c80aa,#055699);
+  color: white;
+  text-align: center;
+  padding: 0px 0px;
+  padding-left: 470px;
+}
+
+.section {
+  padding: 40px 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.section h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #0c6396;
+}
+
+.timeline {
+  border-left: 3px solid #0c5692;
+  padding-left: 20px;
+}
+
+.timeline-item {
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 2px;
+  width: 15px;
+  height: 15px;
+  background:#0a62b4;
+  border-radius: 250%;
+}
+
+.year {
+  font-weight: bold;
+  color:#99038d;
+}
+
+.content {
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-top: 8px;
+}
+
+.skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  list-style: none;
+  padding: 0;
+}
+
+.skills li {
+  background: #fff;
+  padding: 12px;
+  text-align: center;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.footer {
+  background:#055699;
+  color: white;
+  text-align: center;
+  padding: 15px;
+}
+.header1{
+  background:white;
+  color:#055699;
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+header {
+      background-color: #f5f6fa;
+      color:#055699;
+      padding: 18px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    header h1 {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    nav a {
+      margin-left: 25px;
+      text-decoration: none;
+      color: var(--text-light);
+      font-size: 14px;
+      position: relative;
+    }
+
+    nav a.active {
+      color:black;
+    }
+    nav a:hover{
+        color: rgb(1, 17, 17);
+    }
+
+    nav a.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 100%;
+      height: 2px;
+      background-color: #f6f5fc;
+    }
+  @media (max-width: 768px) {
+
+  header {
+    flex-direction: column;
+    padding: 15px;
+    text-align: center;
+  }
+
+  nav {
+    margin-top: 10px;
+  }
+
+  nav a {
+    margin: 8px;
+    font-size: 14px;
+  }
+  .logo{
+    margin-right: 210px;
+  }
+
+  .header {
+    padding-left: 0;
+  }
+
+  .timeline {
+    padding-left: 10px;
+  }
+
+  .section {
+    padding: 20px;
+  }
+}
+/* ===== DASHBOARD NAVBAR ===== */
+
+.dashboard {
+  position: relative; 
+  background: white;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  position: relative;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1d7be7;
+}
+
+/* NAV LINKS */
+.nav-links {
+  display: flex;
+  gap: 25px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #1d7be7;
+  font-size: 15px;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: black;
+}
+
+/* HAMBURGER */
+#menu-toggle {
+  display: none;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+
+  position: absolute;   /* 👈 KEY */
+  right: 25px;          /* 👈 right corner */
+  top: 50%;
+  transform: translateY(-50%);
+}
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: #050505;
+  margin: 4px 0;
+  border-radius: 5px;
+}
+
+/* ===== MOBILE VIEW ===== */
+@media (max-width: 768px) {
+
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 65px;
+    right: 20px;
+    background: white;
+    flex-direction: column;
+    padding: 20px;
+    gap: 15px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    display: none;
+
+  }
+  .logo{
+    font-weight: bolder;
+    margin-right: 195px;
+  }
+  /* checkbox hack */
+  #menu-toggle:checked + .hamburger + .nav-links {
+    display: flex;
+  }
+}

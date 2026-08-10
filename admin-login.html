@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Login</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #194d70, #4fa3d1, #7cc7f0);
+            padding: 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 380px;
+            padding: 35px 30px;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(14px);
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 30px;
+            background: white;
+            color: #1e5f8a;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        button:hover {
+            transform: scale(1.03);
+        }
+
+        #error {
+            margin-top: 15px;
+            text-align: center;
+            color: #ffe0e0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card">
+
+        <h1>Admin Login</h1>
+
+        <p class="subtitle">
+            Portfolio Dashboard
+        </p>
+
+        <form id="loginForm">
+
+            <div class="field">
+                <label>Username</label>
+
+                <input
+                    type="text"
+                    id="username"
+                    required
+                    autocomplete="username"
+                >
+            </div>
+
+            <div class="field">
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    required
+                    autocomplete="current-password"
+                >
+            </div>
+
+            <button type="submit">
+                Login
+            </button>
+
+            <p id="error"></p>
+
+        </form>
+
+    </div>
+
+    <script>
+        const loginForm = document.getElementById("loginForm");
+        const errorMessage = document.getElementById("error");
+
+        loginForm.addEventListener("submit", async (event) => {
+
+            event.preventDefault();
+
+            const username =
+                document.getElementById("username").value;
+
+            const password =
+                document.getElementById("password").value;
+
+            try {
+
+                const response = await fetch("/admin-login", {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        username,
+                        password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+
+                    window.location.href = "/admin.html";
+
+                } else {
+
+                    errorMessage.textContent =
+                        data.message;
+                }
+
+            } catch (error) {
+
+                console.error("Login error:", error);
+
+                errorMessage.textContent =
+                    "Unable to connect to server";
+            }
+        });
+    </script>
+
+</body>
+
+</html>

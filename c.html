@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | Uva Sara Sri S</title>
+
+  <link rel="stylesheet" href="c.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">Uva Sara Sri S</div>
+
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-icon">☰</label>
+
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="acedemic.html">Acedemics</a>
+      <a href="skill.html">Skills & Strength </a>
+      <a href="c.html" class="active">Contact</a>
+    </nav>
+  </header>
+
+  <!-- CONTACT SECTION -->
+  <section class="contact-section">
+    <div class="contact-card">
+
+      <!-- PROFILE IMAGE -->
+      <div class="profile-img">
+        <img src="photo1.jpeg" alt="Sara">
+      </div>
+
+      <h2>Contact Me</h2>
+      <p>Let’s create something beautiful together ✨</p>
+
+      <form id="contactForm">
+        <div class="field">
+          <input type="text" id="name" name="name" required>
+          <label>Full Name</label>
+        </div>
+
+        <div class="field">
+          <input type="email" id="email" name="email" required>
+          <label>Email Address</label>
+        </div>
+
+        <div class="field">
+          <textarea id="message" name="message" required></textarea>
+          <label>Your Message</label>
+        </div>
+
+        <button type="submit">Send Message</button>
+      </form>
+      <div id="successPopup" class="popup">
+      <div class="popup-box">
+      <div class="popup-icon">✓</div>
+
+      <h3>Success!</h3>
+
+      <p id="popupMessage">Message sent successfully!</p>
+
+      <button type="button" onclick="closePopup()">OK</button>
+      </div>
+    </div>
+    </div>
+  </section>
+  <script src="contact.js"></script>
+</body>
+</html>
