@@ -2,9 +2,11 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const dns = require("dns");
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
 require("dotenv").config();
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
@@ -26,21 +28,6 @@ mongoose.connect(process.env.MONGO_URI)
     });
 
 // ===============================
-// Gmail Transporter
-// ===============================
-
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: false,
-    family: 4,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
-
-// ===============================
 // Middleware
 // ===============================
 
@@ -57,7 +44,7 @@ app.post("/contact", async (req, res) => {
 
     try {
 
-        // Save contact message to MongoDB
+        // 1. Save contact message to MongoDB
         const newContact = new Contact({
             name,
             email,
@@ -68,11 +55,15 @@ app.post("/contact", async (req, res) => {
 
         console.log("Contact saved successfully");
 
-        // Send email to your Gmail
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: process.env.EMAIL_USER,
+        // 2. Send email using Resend
+        const { data, error } = await resend.emails.send({
+
+            from: "Portfolio <onboarding@resend.dev>",
+
+            to: [process.env.EMAIL_USER],
+
             replyTo: email,
+
             subject: "New Portfolio Contact Message",
 
             text: `
@@ -83,17 +74,28 @@ Email: ${email}
 
 Message:
 ${message}
-            `
-        };
+`
+        });
 
-        await transporter.sendMail(mailOptions);
+        if (error) {
 
-        console.log("Email sent successfully");
+            console.error("Resend error:", error);
 
-        // Send response to frontend
+            throw new Error("Email sending failed");
+        }
+
+        console.log(
+            "Email sent successfully:",
+            data.id
+        );
+
+        // 3. Send success response to frontend
         res.status(201).json({
+
             success: true,
+
             message: "Message sent successfully"
+
         });
 
     } catch (error) {
@@ -101,8 +103,11 @@ ${message}
         console.error("Contact error:", error);
 
         res.status(500).json({
+
             success: false,
+
             message: "Failed to send message"
+
         });
     }
 });
@@ -112,7 +117,11 @@ ${message}
 // ===============================
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "index.html"));
+
+    res.sendFile(
+        path.join(__dirname, "index.html")
+    );
+
 });
 
 // ===============================
@@ -120,5 +129,9 @@ app.get("/", (req, res) => {
 // ===============================
 
 app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT}`);
+
+    console.log(
+        `Server running on port ${PORT}`
+    );
+
 });
