@@ -31,7 +31,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 587,
+    port: 465,
     secure: false,
     family: 4,
     auth: {
